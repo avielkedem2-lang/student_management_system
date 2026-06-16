@@ -32,3 +32,13 @@ class StudentsDB:
             return {"seuccess": True}
         except Exception as e:
             raise HTTPException(404, f"{e}")
+    
+
+    def get_all_students(self):
+        try:
+            self.db.connect()
+            self.db.cursor.execute("select * from students")
+            return self.db.cursor.fetchall()
+        except Exception as e:
+            print(e)
+            # raise HTTPException()
