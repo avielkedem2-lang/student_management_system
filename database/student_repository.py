@@ -18,6 +18,8 @@ class StudentsDB:
         except Exception as e:
             return e
 
+        finally:
+            self.db.cursor.close()
     
 
     def create_student(self, body):
@@ -31,8 +33,10 @@ class StudentsDB:
             self.db.connection.commit()
             return {"seuccess": True}
         except Exception as e:
-            raise HTTPException(404, f"{e}")
-    
+            raise HTTPException(409, f"{e}")
+
+        finally:
+            self.db.cursor.close()
 
     def get_all_students(self):
         try:
@@ -41,4 +45,31 @@ class StudentsDB:
             return self.db.cursor.fetchall()
         except Exception as e:
             print(e)
-            # raise HTTPException()
+    
+        finally:
+            self.db.cursor.close()
+
+
+    def get_student_by_id(self,id):
+        try:
+            self.db.connect()
+            self.db.cursor.execute("select * from students where id=%s", (id,))
+            return self.db.cursor.fetchone()
+        except Exception as e:
+            print(e)
+    
+        finally:
+            self.db.cursor.close()
+
+
+    def update_name_by_id(self,new_name, id):
+        try:
+            self.db.connect()
+            self.db.cursor.execute("update students set name=%s where id=%s",(new_name, id))
+            self.db.connection.commit()
+            return self.db.cursor.rowcount
+        except Exception as e:
+            print(e)
+    
+        finally:
+            self.db.cursor.close()
