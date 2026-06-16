@@ -7,10 +7,11 @@ class DBConnector:
             "host":"127.0.0.1",
             "port": "3306",
             "password":"4321",
+            "user": "root",
             "database":"students_db"
         }
         self.connection = None
-        self.cusor = None
+        self.cursor = None
     
     def connect(self):
         self.connection = mysql.connector.connect(**self.config)
