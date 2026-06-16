@@ -73,3 +73,24 @@ class StudentsDB:
     
         finally:
             self.db.cursor.close()
+    
+
+    def delete_student_by_id(self, id):
+        try:
+            self.db.connect()
+            self.db.cursor.execute("delete from students where id=%s", (id,))
+            self.db.connection.commit()
+            return self.db.cursor.rowcount
+        except Exception as e:
+            print(e)
+        finally:
+            self.db.cursor.close()
+
+
+    def count_students(self):
+        try:
+            self.db.connect()
+            self.db.cursor.execute("select count(*) as total_students from students")
+            return self.db.cursor.fetchone()
+        except Exception as e:
+            print(e)
